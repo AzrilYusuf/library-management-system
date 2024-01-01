@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <fstream>
 #include <cstdlib>
+#include <Windows.h>
 
 // class Book dan Student
 class Book
@@ -157,6 +158,7 @@ Book buku; // Object buku dari class Book
 Student mahasiswa; // Object mahasiswa dari class Student
 
 // Deklarasi function
+void gotoxy(int x, int y);
 void writeBook();
 void writeStudent();
 void displayBook(char n[]);
@@ -167,17 +169,24 @@ void deleteBook();
 void deleteStudent();
 void displayAllBooks();
 void displayAllStudents();
+void start();
 
-//          ----- MAIN FUNCTION -----
+//                                                        ========== MAIN FUNCTION ==========
 int main()
 {
     writeBook();
     writeStudent();
-    //displayBook(Book::returnBookNumber());
-    //displayStudent(n[]);
 }
 
 // Inisialisasi function
+// Font gotoxy
+void gotoxy(int x, int y) {
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
 // WRITE DATA
 void writeBook()
 {
@@ -433,4 +442,64 @@ void displayAllStudents()
     }
     data.close();
     _getch();
+}
+
+// PEMINJAMAN BUKU
+void bookIssue()
+{
+    char sn[9], bn[6]; // sn = studentNo(nomor mahasiswa) , bn = bookNo(nomor buku)
+    int found = 0, flag = 0;
+    system("cls");
+    std::cout << "\n\nPEMINJAMAN BUKU";
+    std::cout << "\n\n\tMasukkan NIM mahasiswa : ";
+    std::cin >> sn;
+    data.open("student.dat", std::ios::in | std::ios::out);
+    data1.open("book.dat", std::ios::in | std::ios::out);
+    while (data.read((char*)&mahasiswa, sizeof(Student)) && found == 0)
+    {
+        if (_strcmpi(mahasiswa.returnNim(), sn) == 0) // Compare NIM
+        {
+            found == 1;
+            if (mahasiswa.returnTotalBook() == 0) // Jika buku belum dipinjam
+            {
+                std::cout << "\n\n\tMasukkan nomor buku : ";
+                std::cin >> bn;
+                while (data1.read((char*)&buku, sizeof(Book)) && flag == 0)
+                {
+                    if (_strcmpi(buku.returnBookNumber(), bn) == 0) // Compare book number
+                    {
+                        flag = 1;
+                        mahasiswa.addTotalBook();
+                        mahasiswa.getStudentBookNum(buku.returnBookNumber());
+                        int pos = -1 * sizeof(mahasiswa);
+                        data.seekg(pos, std::ios::cur);
+                        data.write((char*)&mahasiswa, sizeof(Student));
+                        std::cout << "\n\n\tBuku sukses dipinjam!\n\n Mohon catat bahwa tanggal peminjaman buku tertulis di bagian belakang buku dan kembalikan buku dalam 15 hari.\nTerima Kasih!";
+                    }
+                }
+                if (flag == 0)
+                {
+                    std::cout << "Buku tidak ditemukan";
+                }
+            }
+            else
+            {
+                std::cout << "Anda belum mengembalikan buku yang anda pinjam sebelumnya.";
+            }
+        }
+    }
+    if (found == 0)
+    {
+        std::cout << "Data mahasiswa tidak ada";
+    }
+    _getch();
+    data.close();
+    data1.close();
+}
+
+// Memulai program
+void start()
+{
+    system("cls");
+    gotoxy(35, 11);
 }
