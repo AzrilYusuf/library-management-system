@@ -1,6 +1,7 @@
 ﻿  Library-Management-System.cpp
-D:\Coding\C++\Assignment\Library-Management-System\Library-Management-System\Library-Management-System.cpp(170,17): error C2065: 'n': undeclared identifier
-D:\Coding\C++\Assignment\Library-Management-System\Library-Management-System\Library-Management-System.cpp(170,19): error C2059: syntax error: ']'
-D:\Coding\C++\Assignment\Library-Management-System\Library-Management-System\Library-Management-System.cpp(171,20): error C2065: 'n': undeclared identifier
-D:\Coding\C++\Assignment\Library-Management-System\Library-Management-System\Library-Management-System.cpp(171,22): error C2059: syntax error: ']'
-D:\Coding\C++\Assignment\Library-Management-System\Library-Management-System\Library-Management-System.cpp(236,18): warning C4553: '==': result of expression not used; did you intend '='?
+D:\Coding\C++\Assignment\Library-Management-System\Library-Management-System\Library-Management-System.cpp(362,18): warning C4553: '==': result of expression not used; did you intend '='?
+D:\Coding\C++\Assignment\Library-Management-System\Library-Management-System\Library-Management-System.cpp(390,26): warning C4309: 'initializing': truncation of constant value
+D:\Coding\C++\Assignment\Library-Management-System\Library-Management-System\Library-Management-System.cpp(421,26): warning C4309: 'initializing': truncation of constant value
+D:\Coding\C++\Assignment\Library-Management-System\Library-Management-System\Library-Management-System.cpp(573,19): warning C4553: '==': result of expression not used; did you intend '='?
+D:\Coding\C++\Assignment\Library-Management-System\Library-Management-System\Library-Management-System.cpp(585,38): warning C4309: 'initializing': truncation of constant value
+  Library-Management-System.vcxproj -> D:\Coding\C++\Assignment\Library-Management-System\x64\Debug\Library-Management-System.exe

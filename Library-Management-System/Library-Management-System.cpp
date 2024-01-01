@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 #include <conio.h>
 #include <iomanip>
 #include <stdlib.h>
@@ -7,6 +8,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <Windows.h>
+#undef max
 
 // class Book dan Student
 class Book
@@ -159,6 +161,8 @@ Student mahasiswa; // Object mahasiswa dari class Student
 
 // Deklarasi function
 void gotoxy(int x, int y);
+void start();
+void adminMenu();
 void writeBook();
 void writeStudent();
 void displayBook(char n[]);
@@ -169,22 +173,129 @@ void deleteBook();
 void deleteStudent();
 void displayAllBooks();
 void displayAllStudents();
-void start();
+void bookIssue();
 
 //                                                        ========== MAIN FUNCTION ==========
 int main()
 {
-    writeBook();
-    writeStudent();
+    char choice; // Pilihan
+    system("cls");
+    start();
+    do
+    {
+        system("cls");
+        std::cout << "\n\n\n\t MAIN MENU";
+        std::cout << "\n\n\n\t1 PEMINJAMAN BUKU";
+        std::cout << "\n\n\n\t2 MENU ADMINISTRATOR";
+        std::cout << "\n\n\n\t3 KELUAR";
+        std::cout << "\n\n\n\t MOHON PILIH SALAH SATU (1-3)";
+        choice = _getche();
+        switch (choice)
+        {
+        case '1' :
+            bookIssue();
+            break;
+        case '2' :
+            adminMenu();
+            break;
+        case '3' :
+            exit(0);
+            break;
+        default :
+            std::cout << "PILIHAN TIDAK VALID";
+        }
+    } while (choice != 3);
 }
 
 // Inisialisasi function
-// Font gotoxy
+// FONT GOTOXY
 void gotoxy(int x, int y) {
     COORD coord;
     coord.X = x;
     coord.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+// HALAMAN AWAL PROGRAM
+void start()
+{
+    system("cls");
+    gotoxy(35, 11);
+    std::cout << "LIBRARY";
+    gotoxy(35, 14);
+    std::cout << "MANAGEMENT";
+    gotoxy(35, 17);
+    std::cout << "SYSTEM";
+    _getch();
+}
+
+// MENU ADMIN
+void adminMenu()
+{
+    system("cls");
+    int choice; // Pilihan
+    std::cout << "\n\n\n\tMENU ADMINISTRATOR";
+    std::cout << "\n\n\n\t1.BUAT DATA MAHASISWA";
+    std::cout << "\n\n\n\t2.TAMPILKAN SEMUA DATA MAHASISWA";
+    std::cout << "\n\n\n\t3.TAMPILKAN DETAIL DATA MAHASISWA";
+    std::cout << "\n\n\n\t4.RUBAH DETAIL DATA MAHASISWA";
+    std::cout << "\n\n\n\t5.HAPUS DATA MAHASISWA";
+    std::cout << "\n\n\n\t6.BUAT BUKU";
+    std::cout << "\n\n\n\t7.TAMPILKAN SEMUA BUKU";
+    std::cout << "\n\n\n\t8.TAMPILKAN DETAIL BUKU";
+    std::cout << "\n\n\n\t9.RUBAH DATA BUKU";
+    std::cout << "\n\n\n\t10.HAPUS BUKU";
+    std::cout << "\n\n\n\t11.KEMBALI KE MAIN MENU";
+    std::cout << "\n\n\n\tMOHON PILIH SALAH SATU PILIHAN (1-11)";
+    std::cin >> choice;
+    switch (choice)
+    {
+    case 1:
+        writeStudent();
+        break;
+    case 2:
+        displayAllStudents();
+        break;
+    case 3:
+        char num[9];
+        system("cls");
+        std::cout << "\n\n\tMohon masukkan NIM mahasiswa : ";
+        std::cin >> num;
+        displayStudent(num);
+        break;
+    case 4:
+        modifyStudent();
+        break;
+    case 5:
+        deleteStudent();
+        break;
+    case 6:
+        writeBook();
+        break;
+    case 7:
+        displayAllBooks();
+        break;
+    case 8:
+    {
+        char num[6];
+        system("cls");
+        std::cout << "\n\n\tMohon masukkan nomor buku : ";
+        std::cin >> num;
+        displayBook(num);
+        break;
+    }
+    case 9:
+        modifyBook();
+        break;
+    case 10:
+        deleteBook();
+        break;
+    case 11:
+        return;
+    default:
+        std::cout << "PILIHAN TIDAK VALID";
+    }
+    adminMenu();
 }
 
 // WRITE DATA
@@ -495,11 +606,4 @@ void bookIssue()
     _getch();
     data.close();
     data1.close();
-}
-
-// Memulai program
-void start()
-{
-    system("cls");
-    gotoxy(35, 11);
 }
