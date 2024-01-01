@@ -10,12 +10,12 @@
 // class Book dan Student
 class Book
 {
-private:
+private :
     char bookNumber[6]; // Nomor buku
     char bookTitle[50]; // Judul buku
     char author[20]; // Penulis
 
-public:
+public :
     // Menambahkan data buku
     void createBook()
     {
@@ -58,7 +58,7 @@ public:
     }
 
     // Mengembalikan (nilai) nomor buku
-    char *returnBookNumber()
+    char* returnBookNumber()
     {
         return bookNumber;
     }
@@ -110,7 +110,7 @@ public :
     }
 
     // Mengembalikan (nilai) NIM
-    char *returnNim()
+    char* returnNim()
     {
         return nim;
     }
@@ -161,14 +161,16 @@ void writeBook();
 void writeStudent();
 void displayBook(char n[]);
 void displayStudent(char n[]);
+void modifyBook();
+void modifyStudent();
 
 //          ----- MAIN FUNCTION -----
 int main()
 {
     writeBook();
     writeStudent();
-    displayBook(n[]);
-    displayStudent(n[]);
+    //displayBook(Book::returnBookNumber());
+    //displayStudent(n[]);
 }
 
 // Inisialisasi function
@@ -207,7 +209,7 @@ void displayBook(char n[])
     int flag = 0; // Buku tidak ditemukan
     std::cout << "\nDETAIL BUKU\n";
     data.open("book.dat", std::ios::in); // Membuka data
-    while (data.read((char *)&buku, sizeof(Book))) // Membaca data
+    while (data.read((char*)&buku, sizeof(Book))) // Membaca data
     {
         if (_strcmpi(buku.returnBookNumber(), n) == 0)
         {
@@ -220,7 +222,7 @@ void displayBook(char n[])
     {
         std::cout << "\n\nBuku tidak tersedia";
     }
-    _getch();
+    _getch(); // Press key to get out
 }
 
 void displayStudent(char n[])
@@ -241,5 +243,68 @@ void displayStudent(char n[])
     {
         std::cout << "\n\nMahasiswa tidak ada, harus menambahkan mahasiswa terlebih dahulu";
     }
-    _getch();
+    _getch(); // Press key to get out
+}
+
+// MODIFY DATA
+void modifyBook()
+{
+    char n[6];
+    int found = 0;
+    system("cls");
+    std::cout << "\n\nEDIT BUKU\n\n";
+    std::cout << "Masukkan nomor buku : ";
+    std::cin >> n;
+    data.open("book.dat", std::ios::in | std::ios::out);
+    while (data.read((char*)&buku, sizeof(Book)) && found == 0)
+    {
+        if (_strcmpi(buku.returnBookNumber(), n) == 0)
+        {
+            buku.showBook();
+            std::cout << "\nMasukkan detail baru buku";
+            buku.modifyBook();
+            int pos = -1 * sizeof(buku);
+            data.seekp(pos, std::ios::cur);
+            data.write((char*)&buku, sizeof(Book));
+            std::cout << "\n\n\nRecord updated!";
+            found = 1;
+        }
+    }
+    data.close();
+    if (found == 0)
+    {
+        std::cout << "\n\nData tidak ditemukan, buat data terlebih dahulu";
+    }
+    _getch(); // Press key to get out
+}
+
+void modifyStudent()
+{
+    char n[9];
+    int found = 0;
+    system("cls");
+    std::cout << "\n\nEDIT DATA MAHASISWA\n\n";
+    std::cout << "Masukkan NIM mahasiswa : ";
+    std::cin >> n;
+    data.open("student.dat", std::ios::in | std::ios::out);
+    while (data.read((char*)&mahasiswa, sizeof(Student)) && found == 0)
+    {
+        if (_strcmpi(mahasiswa.returnNim(), n) == 0)
+        {
+            mahasiswa.showStudent();
+            std::cout << "\nMasukkan detail mahasiswa baru : ";
+            mahasiswa.modifyStudent();
+            int pos = -1 * sizeof(mahasiswa);
+            data.seekp(pos, std::ios::cur); // Back from the current position
+            data.write((char*)&mahasiswa, sizeof(Student));
+            std::cout << "\n\nRecord updated!";
+            found = 1;
+        }
+    }
+    data.close();
+    if (found == 0)
+    {
+        std::cout << "\n\nData tidak ditemukan, buat data terlebih dahulu";
+    }
+    _getch(); // Press key to get out
 }
