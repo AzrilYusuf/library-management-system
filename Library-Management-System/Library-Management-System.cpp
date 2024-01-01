@@ -163,6 +163,8 @@ void displayBook(char n[]);
 void displayStudent(char n[]);
 void modifyBook();
 void modifyStudent();
+void deleteBook();
+void deleteStudent();
 
 //          ----- MAIN FUNCTION -----
 int main()
@@ -308,3 +310,82 @@ void modifyStudent()
     }
     _getch(); // Press key to get out
 }
+
+// DELETE DATA
+void deleteBook()
+{
+    char n[6];
+    int flag = 0;
+    system("cls");
+    std::cout << "\n\n\n\tHAPUS BUKU";
+    std::cout << "\n\nMasukkan nomor buku : ";
+    std::cin >> n;
+    data.open("book.dat", std::ios::in | std::ios::out);
+    std::fstream data2; // Object baru
+    data2.open("temp.dat", std::ios::out);
+    data.seekg(0, std::ios::beg);
+    while (data.read((char*)&buku, sizeof(Book)))
+    {
+        if (_strcmpi(buku.returnBookNumber(), n) != 0)
+        {
+            data2.write((char*)&mahasiswa, sizeof(Book));
+        }
+        else
+        {
+            flag = 1; // Data mahasiswa ditemukan
+        }
+    }
+    data2.close();
+    data.close();
+    remove("book.dat");
+    rename("temp.dat", "book.dat"); // Data setelah dihapus dipindah ke temp.dat
+    if (flag == 1)
+    {
+        std::cout << "\n\n\tRecord deleted...";
+    }
+    else
+    {
+        std::cout << "\n\nData tidak ditemukan";
+    }
+    _getch();
+}
+
+void deleteStudent()
+{
+    char n[9];
+    int flag = 0;
+    system("cls"); // Clear screen
+    std::cout << "\n\n\n\tHAPUS DATA MAHASISWA";
+    std::cout << "\n\nMasukkan NIM mahasiswa : ";
+    std::cin >> n;
+    data.open("student.dat", std::ios::in | std::ios::out);
+    std::fstream data2;
+    data2.open("temp.dat", std::ios::out);
+    data.seekg(0, std::ios::beg);
+    while (data.read((char*)&mahasiswa, sizeof(Student)))
+    {
+        if (_strcmpi(mahasiswa.returnNim(), n) != 0)
+        {
+            data2.write((char*)&mahasiswa, sizeof(Student));
+        }
+        else
+        {
+            flag = 1; // Data mahasiswa ditemukan
+        }
+    }
+    data2.close();
+    data.close();
+    remove("student.dat");
+    rename("temp.dat", "student.dat");
+    if (flag == 1)
+    {
+        std::cout << "\n\n\tRecord deleted...";
+    }
+    else
+    {
+        std::cout << "\n\nData tidak ditemukan";
+    }
+    _getch();
+}
+
+// DISPLAY ALL DATA
