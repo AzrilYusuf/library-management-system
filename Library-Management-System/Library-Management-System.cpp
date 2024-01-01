@@ -11,7 +11,7 @@
 class Book
 {
 private:
-    int bookNumber; // Nomor buku
+    char bookNumber[6]; // Nomor buku
     char bookTitle[50]; // Judul buku
     char author[20]; // Penulis
 
@@ -58,7 +58,7 @@ public:
     }
 
     // Mengembalikan (nilai) nomor buku
-    int returnBookNumber()
+    char *returnBookNumber()
     {
         return bookNumber;
     }
@@ -67,7 +67,7 @@ public:
 class Student
 {
 private :
-    int nim;
+    char nim[9];
     char studentName[20];
     char studentBookingNumber[6]; // Nomor pemesanan buku
     int totalBook; // Total buku
@@ -110,7 +110,7 @@ public :
     }
 
     // Mengembalikan (nilai) NIM
-    int returnNim()
+    char *returnNim()
     {
         return nim;
     }
@@ -158,22 +158,88 @@ Student mahasiswa; // Object mahasiswa dari class Student
 
 // Deklarasi function
 void writeBook();
+void writeStudent();
+void displayBook(char n[]);
+void displayStudent(char n[]);
 
+//          ----- MAIN FUNCTION -----
 int main()
 {
-    //Book buku;
-    //buku.createBook();
-    //buku.showBook();
-    //buku.modifyBook();
-    //buku.report();
-    //buku.returnBookNumber();
+    writeBook();
+    writeStudent();
+    displayBook(n[]);
+    displayStudent(n[]);
+}
 
-    Student mahasiswa;
-    mahasiswa.createStudent();
-    mahasiswa.showStudent();
-    mahasiswa.modifyStudent();
-    mahasiswa.addTotalBook();
-    //mahasiswa.resetTotalBook();
-    //mahasiswa.getStudentBookNum();
-    mahasiswa.report();
+// Inisialisasi function
+// WRITE DATA
+void writeBook()
+{
+    char ch;
+    data.open("book.dat", std::ios::out | std::ios::app); // Membuka data
+    do {
+        system("cls");
+        buku.createBook();
+        data.write((char*)&buku, sizeof(Book)); // Menulis dan menambahkan data, size class
+        std::cout << "\n\nApakah mau menambahkan data buku lagi? (y/n) ";
+        std::cin >> ch;
+    } while (ch == 'y' || ch == 'Y');
+    data.close();
+}
+
+void writeStudent()
+{
+    char ch;
+    data.open("student.dat", std::ios::out || std::ios::app);
+    do {
+        system("cls");
+        mahasiswa.createStudent();
+        data.write((char*)&mahasiswa, sizeof(Student));
+        std::cout << "\n\nApakah mau menambahkan data mahasiswa lagi? (y/n) ";
+        std::cin >> ch;
+    } while (ch == 'y' || ch == 'Y');
+    data.close();
+}
+
+// DISPLAY DATA
+void displayBook(char n[])
+{
+    int flag = 0; // Buku tidak ditemukan
+    std::cout << "\nDETAIL BUKU\n";
+    data.open("book.dat", std::ios::in); // Membuka data
+    while (data.read((char *)&buku, sizeof(Book))) // Membaca data
+    {
+        if (_strcmpi(buku.returnBookNumber(), n) == 0)
+        {
+            buku.showBook();
+            flag = 1;
+        }
+    }
+    data.close();
+    if (flag == 0)
+    {
+        std::cout << "\n\nBuku tidak tersedia";
+    }
+    _getch();
+}
+
+void displayStudent(char n[])
+{
+    int flag = 0;
+    std::cout << "\nDETAIL MAHASISWA\n";
+    data.open("student.dat", std::ios::in); // Membuka data
+    while (data.read((char*)&mahasiswa, sizeof(Student))) // Membaca data
+    {
+        if (_strcmpi(mahasiswa.returnNim(), n) == 0)
+        {
+            mahasiswa.showStudent();
+            flag == 1;
+        }
+    }
+    data.close();
+    if (flag == 0)
+    {
+        std::cout << "\n\nMahasiswa tidak ada, harus menambahkan mahasiswa terlebih dahulu";
+    }
+    _getch();
 }
