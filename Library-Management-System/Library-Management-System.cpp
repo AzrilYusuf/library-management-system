@@ -165,6 +165,8 @@ void modifyBook();
 void modifyStudent();
 void deleteBook();
 void deleteStudent();
+void displayAllBooks();
+void displayAllStudents();
 
 //          ----- MAIN FUNCTION -----
 int main()
@@ -389,3 +391,46 @@ void deleteStudent()
 }
 
 // DISPLAY ALL DATA
+void displayAllBooks()
+{
+    system("cls"); // Clear screen
+    data.open("book.dat", std::ios::in); // Buka file book.dat
+    if (!data)
+    {
+        std::cout << "File tidak bisa dibuka";
+        _getch();
+        return; // Press any key and return
+    }
+    std::cout << "\n\n\t\tLIST BUKU\n\n";
+    std::cout << "==================================================================\n";
+    std::cout << "No. Buku" << "\t|\t" << "Judul Buku" << "\t|\t" << "Penulis" << std::endl;
+    std::cout << "==================================================================\n";
+    while (data.read((char*)&buku, sizeof(Book)))
+    {
+        buku.report();
+    }
+    data.close();
+    _getch();
+}
+
+void displayAllStudents()
+{
+    system("cls"); // Clear screen
+    data.open("student.dat", std::ios::in); // Buka file student.dat
+    if (!data)
+    {
+        std::cout << "File tidak bisa dibuka";
+        _getch();
+        return; // Press any key and return
+    }
+    std::cout << "\n\n\t\tDATA MAHASISWA\n\n";
+    std::cout << "==================================================================\n";
+    std::cout << "NIM" << "\t|\t" << "Nama Mahasiswa" << "\t|\t" << "Buku yang Dipinjam" << std::endl;
+    std::cout << "==================================================================\n";
+    while (data.read((char*)&mahasiswa, sizeof(Student)))
+    {
+        mahasiswa.report();
+    }
+    data.close();
+    _getch();
+}
